@@ -1,17 +1,32 @@
+def read_file(filename):
+    try:
+        with open(filename, 'r') as file:
+            return file.read()
+    except (FileNotFoundError, IOError) as e:
+        raise e
+
+def write_file(filename, content):
+    try:
+        with open(filename, 'w') as file:
+            file.write(content)
+    except IOError as e:
+        raise e
+
+def create_modified_filename(original_filename):
+    return "modified_" + original_filename
+
 file_name = input("Enter the file name/file path: ")
+
 try:
-    # Read the original file
-    with open(file_name, 'r') as file:
-        content = file.read()
-        print("Original Content:", content)
-    # Write modified content to a new file
-    new_file_name = "modified_" + file_name
-    with open(new_file_name, 'w') as new_file:
-        new_file.write('im loving this module')
-    # Read and print the modified file
-    with open(new_file_name, 'r') as new_file:
-        new_content = new_file.read()
-        print('Modified Content:', new_content)
+    content = read_file(file_name)
+    print("Original Content:", content)
+    
+    new_file_name = create_modified_filename(file_name)
+    write_file(new_file_name, 'im loving this module')
+    
+    new_content = read_file(new_file_name)
+    print('Modified Content:', new_content)
+    
 except (FileNotFoundError, IOError) as e:
     print(f"Error: {e}")
     print(f"Please check '{file_name}' and try again.")
